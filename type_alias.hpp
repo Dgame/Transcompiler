@@ -1,7 +1,7 @@
 #ifndef ALIAS_TYPES_HPP
 #define ALIAS_TYPES_HPP
 
-#include <stdint.h>
+#include <cstdint>
 
 using i8_t = std::int8_t;
 using u8_t = std::uint8_t;

@@ -1,33 +1,20 @@
 #ifndef LEXER_HPP
 #define LEXER_HPP
 
-#include <vector>
 #include "type_alias.hpp"
 #include "Token.hpp"
 
 class Lexer {
 private:
     Cursor _cursor;
-    std::vector<Token> _tokens;
 
-    void _readNumber();
-    void _readIdentifier();
-    void _lex();
+    void _readIdentifier(Token*);
+    void _readNumber(Token*);
 
 public:
-    explicit Lexer(const char*);
+    explicit Lexer(const std::string&);
 
-    const Token* begin() const {
-        return &_tokens.front();
-    }
-
-    const Token* end() const {
-        return &_tokens.back();
-    }
-
-    u32_t count() const {
-        return _tokens.size();
-    }
+    Token get();
 };
 
 #endif

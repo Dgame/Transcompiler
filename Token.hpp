@@ -1,10 +1,12 @@
 #ifndef TOKEN_HPP
 #define TOKEN_HPP
 
-#include <unordered_map>
+#include <map>
+#include "type_alias.hpp"
 
 enum class TokenType {
     None,
+    Eof,
     Integer,
     Float,
     Identifier,
@@ -28,6 +30,7 @@ enum class TokenType {
     Less,
     LessEqual,
     Dot,
+    Underscore,
     Comma,
     Semicolon,
     Colon,
@@ -35,6 +38,9 @@ enum class TokenType {
     Not,
     Tilde,
     Hash,
+    LArrow, // <-
+    RArrow, // ->
+    DoubleArrow, // =>
     LParen, // (
     RParen, // )
     LBracket, // [
@@ -60,50 +66,11 @@ enum class Keyword {
     False,
 };
 
-bool isOperator(TokenType type) {
-    switch (type) {
-        case TokenType::Plus:
-        case TokenType::Minus:
-        case TokenType::Mul:
-        case TokenType::Div:
-        case TokenType::Percent:
-            return true;
-        default:
-            return false;
-    }
-}
+bool isOperator(TokenType);
+bool isOperation(TokenType);
+bool isBoolean(TokenType);
 
-bool isOperation(TokenType type) {
-    if (isOperator(type))
-        return true;
-
-    switch (type) {
-        case TokenType::BitAnd:
-        case TokenType::BitOr:
-            return true;
-        default:
-            return false;
-    }
-}
-
-bool isBoolean(TokenType type) {
-    switch (type) {
-        case TokenType::LogicAnd:
-        case TokenType::LogicOr:
-        case TokenType::Equal:
-        case TokenType::NotEqual:
-        case TokenType::Greater:
-        case TokenType::GreaterEqual:
-        case TokenType::Less:
-        case TokenType::LessEqual:
-        case TokenType::Not:
-            return true;
-        default:
-            return false;
-    }
-}
-
-const std::unordered_map<const char*, Keyword> Keywords = {
+const std::map<const std::string, Keyword> Keywords = {
     {"print", Keyword::Print},
     {"if", Keyword::If},
     {"else", Keyword::Else},
@@ -119,17 +86,14 @@ const std::unordered_map<const char*, Keyword> Keywords = {
     {"false", Keyword::False},
 };
 
-Keyword isKeyword(const char* kw) {
-    auto it = Keywords.find(kw);
-    if (it != Keywords.end())
-        return it->second;
-    return Keyword::None;
-}
+Keyword isKeyword(const std::string&);
 
 struct Cursor {
     const char* ptr = nullptr;
-    u32_t line = 0;
-    u16_t column = 0;
+    u32_t line = 1;
+    u16_t column = 1;
+
+    Cursor& next();
 };
 
 struct Token {
@@ -139,8 +103,10 @@ struct Token {
     union {
         i32_t ival;
         f32_t fval;
-        const char* identifier;
-    }
+        Keyword keyword;
+    };
+
+    std::string id;
 
     Token() = default;
     explicit Token(TokenType ty, Cursor loc) : type(ty), cursor(loc) { }

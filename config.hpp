@@ -17,4 +17,6 @@
     #error "Unsupported OS"
 #endif
 
+#define DEBUG 0
+
 #endif
