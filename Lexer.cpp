@@ -39,25 +39,28 @@ void Lexer::_readNumber(Token* tok) {
         ival += (*_cursor.ptr) - '0';
 
         _cursor.next();
-        if (*(_cursor.ptr) == '_')
+        if (*(_cursor.ptr) == '_' &&
+            std::isdigit(*(_cursor.ptr + 1)))
+        {
             _cursor.next();
+        }
     }
-#if DEBUG
-    std::cout << "Number is: " << ival << std::endl;
-#endif
+
     if (*_cursor.ptr == '.') {
         _cursor.next();
+
         for (; std::isdigit(*_cursor.ptr); n++) {
             ival *= 10;
             ival += (*_cursor.ptr) - '0';
 
             _cursor.next();
-            if (*(_cursor.ptr) == '_')
+            if (*(_cursor.ptr) == '_' &&
+                std::isdigit(*(_cursor.ptr + 1)))
+            {
                 _cursor.next();
+            }
         }
-#if DEBUG
-        std::cout << "Number is: " << ival << ", n is: " << n << ':' << std::pow(10, n - 1) << std::endl;
-#endif
+
         *tok = Token(TokenType::Float, loc);
         tok->fval = ival / std::pow(10, n - 1);
 
@@ -65,11 +68,10 @@ void Lexer::_readNumber(Token* tok) {
             tok->fval *= -1;
     } else {
         *tok = Token(TokenType::Integer, loc);
+        tok->ival = ival;
 
         if (neg)
-            tok->sival = ival * -1;
-        else
-            tok->uival = ival;
+            tok->ival *= -1;
     }
 }
 
@@ -107,6 +109,11 @@ Token Lexer::get() {
         break;
         case '-':
         {
+            if (std::isdigit(*(_cursor.ptr + 1))) {
+                _readNumber(&tok);
+                return tok;
+            }
+
             const Cursor loc = _cursor;
             if (*(_cursor.ptr + 1) == '>') {
                 _cursor.next();
