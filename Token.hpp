@@ -1,7 +1,7 @@
 #ifndef TOKEN_HPP
 #define TOKEN_HPP
 
-#include <map>
+#include <unordered_map>
 #include "type_alias.hpp"
 
 enum class TokenType {
@@ -51,6 +51,18 @@ enum class TokenType {
 
 enum class Keyword {
     None,
+    U_64,
+    U_32,
+    U_16,
+    U_8,
+    I_64,
+    I_32,
+    I_16,
+    I_8,
+    Bool,
+    Char,
+    F_64,
+    F_32,
     Print,
     If,
     Else,
@@ -70,7 +82,19 @@ bool isOperator(TokenType);
 bool isOperation(TokenType);
 bool isBoolean(TokenType);
 
-const std::map<const std::string, Keyword> Keywords = {
+const std::unordered_map<std::string, Keyword> Keywords = {
+    {"u64", Keyword::U_64},
+    {"u32", Keyword::U_32},
+    {"u16", Keyword::U_16},
+    {"u8", Keyword::U_8},
+    {"i64", Keyword::I_64},
+    {"i32", Keyword::I_32},
+    {"i16", Keyword::I_16},
+    {"i8", Keyword::I_8},
+    {"bool", Keyword::Bool},
+    {"char", Keyword::Char},
+    {"f64", Keyword::F_64},
+    {"f32", Keyword::F_32},
     {"print", Keyword::Print},
     {"if", Keyword::If},
     {"else", Keyword::Else},

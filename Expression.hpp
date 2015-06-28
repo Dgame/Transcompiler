@@ -1,7 +1,7 @@
 #ifndef EXPR_HPP
 #define EXPR_HPP
 
-#include <map>
+#include <unordered_map>
 
 #include "Visitor.hpp"
 #include "Array.hpp"
@@ -306,7 +306,7 @@ public:
 
 class PropertyExpr : public Expr {
 private:
-    static const std::map<const std::string, const std::string> Properties;
+    static const std::unordered_map<std::string, std::string> Properties;
 
     const std::string _property;
     const std::unique_ptr<const Expr> _exp;

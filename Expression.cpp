@@ -9,7 +9,7 @@ void ArrayExpr::addExpr(const Expr* exp) {
     _expr->add(exp);
 }
 
-const std::map<const std::string, const std::string> PropertyExpr::Properties = {
+const std::unordered_map<std::string, std::string> PropertyExpr::Properties = {
     {"length", "size"}
 };
 
