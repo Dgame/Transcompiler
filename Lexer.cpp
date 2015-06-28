@@ -32,8 +32,8 @@ void Lexer::_readNumber(Token* tok) {
         neg = true;
     }
 
-    u32_t n = 0;
-    i32_t ival = 0;
+    u16_t n = 0;
+    u64_t ival = 0;
     for (; std::isdigit(*_cursor.ptr); n++) {
         ival *= 10;
         ival += (*_cursor.ptr) - '0';
@@ -65,10 +65,11 @@ void Lexer::_readNumber(Token* tok) {
             tok->fval *= -1;
     } else {
         *tok = Token(TokenType::Integer, loc);
-        tok->ival = ival;
 
         if (neg)
-            tok->ival *= -1;
+            tok->sival = ival * -1;
+        else
+            tok->uival = ival;
     }
 }
 
@@ -83,9 +84,12 @@ Token Lexer::get() {
         case 0:
             tok = Token(TokenType::Eof, _cursor);
         break;
+        case 9: // tab
+        case 11: // vtab
         case 32: // space
             _cursor.next();
             return get();
+        break;
         case 'a' ... 'z':
             _readIdentifier(&tok);
             return tok;

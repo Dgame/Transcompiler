@@ -101,8 +101,9 @@ struct Token {
     Cursor cursor;
 
     union {
-        i32_t ival;
-        f32_t fval;
+        u64_t uival;
+        i64_t sival;
+        f64_t fval;
         Keyword keyword;
     };
 

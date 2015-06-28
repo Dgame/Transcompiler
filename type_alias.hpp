@@ -19,6 +19,5 @@ using size_t = std::size_t;
 
 using f32_t = float;
 using f64_t = double;
-using f80_t = long double;
 
 #endif
