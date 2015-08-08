@@ -4,9 +4,9 @@
 VarExpr::VarExpr(const VarDecl* vd) : _var(vd) { }
 
 void ArrayExpr::addExpr(const Expr* exp) {
-    if (!_expr)
-        _expr.reset(new Array<const Expr>());
-    _expr->add(exp);
+    if (!_exp)
+        _exp.reset(new Array<const Expr>());
+    _exp->add(exp);
 }
 
 const std::unordered_map<std::string, std::string> PropertyExpr::Properties = {

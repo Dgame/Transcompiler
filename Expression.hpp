@@ -274,13 +274,13 @@ public:
 
 class ArrayExpr : public Expr {
 private:
-    std::unique_ptr<Array<const Expr>> _expr;
+    std::unique_ptr<Array<const Expr>> _exp;
 
 public:
     void addExpr(const Expr*);
 
     const Array<const Expr>* getExpr() const {
-        return _expr.get();
+        return _exp.get();
     }
 
     virtual void accept(Visitor* v) const {
@@ -309,7 +309,7 @@ private:
     static const std::unordered_map<std::string, std::string> Properties;
 
     const std::string _property;
-    const std::unique_ptr<const Expr> _exp;
+    std::unique_ptr<const Expr> _exp;
 
 public:
     explicit PropertyExpr(const std::string& prop, const Expr* exp) : _property(prop), _exp(exp) { }
